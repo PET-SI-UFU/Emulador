@@ -7,7 +7,7 @@
 # f) criar uma função que retorna o byte apontado pelo PC (mnemonico - instrução)
 # g) criar uma função que com base no byte acima decodifica a intrução (binario -> assembly)
 # h) utilizar mascaras de bits para decidir com base no mnemonico a quantidade de argumentos da intrução
-# i) criar uma função que recebe como parametro o numero de bytes (1 ou 2) a partir do PC que devem ser retornados
+#(ok) i) criar uma função que recebe como parametro o numero de bytes (1 ou 2) a partir do PC que devem ser retornados
 # j) toda função que manipula o PC deve atualiza-lo
 #(ok) k) criar um dicionario de correspondencia entre codigo de maquina e assembly
 # l)

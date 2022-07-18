@@ -9,6 +9,8 @@ class Cpu6502:
         X: registrador X 8 bits
         Y: registrador Y 8 bits
         instruction: dicionario que mapeia o codigo binario de uma instrução para seu respectivo nome(função)
+        objC: dicionario que mapeia o formato da instrução e sua representação binaria ao número de argumentos da
+            respectiva instrução
 
     """
 
@@ -16,9 +18,48 @@ class Cpu6502:
     A = 0x0
     X = 0x0
     Y = 0x0
+    S = 0x0
+
+
+    def ADC(self, ins):
+        """Função que emula a instrução ADC
+
+        Função que emula a instrução de soma com carrier ADC, com todos seus tipos de endereçamento
+
+        Args:
+            ins: binario da instrução
+
+        """
+        bk = 0b00011100 # bitmask para extração do formato de endereçamento
+        add = (ins & bk) >> 2 # extraindo os bits referentes ao formato de endereçamento
+        nx = self.objC['aaa'][add] # verificando na tabela de endereçamento quantos bytes são recebidos por argumento
+        args = #pegar da memoria nx bytes
+        if add == 0b000: # processar a memoria devidademente para cada tipo de endereçamento e fazer a soma (um if para cada endereçamento)
+            pass
+        elif add == 0b001:
+            pass
+        elif add == 0b010:
+            pass
+        elif add == 0b011:
+            pass
+        elif add == 0b100:
+            pass
+        elif add == 0b101:
+            pass
+        elif add == 0b110:
+            pass
+        elif add == 0b111:
+            pass
+
+        self.pc += nx # atualizando o PC para a posição depois dos argumentos
+
+        if self.A > 0xFF: # verificação se houve overflow
+            self.A &= 0xFF # apagando os bits que não pertencem ao registrador
+            self.S |= 0b00000001 # settando o bit de carrier do registrador de Status
+
 
     instruction = {  # conjunto de instruções do 6502
-        0b01100001: "ADC",
+        0b01100001: ADC,
         0b00100001: "AND",
         0b00000110: "ASL",
         0b10010000: "BCC",
@@ -74,4 +115,56 @@ class Cpu6502:
         0b10001010: "TXA",
         0b10011010: "TXA",
         0b10011000: "TYA"
+    }
+
+    objC = {  # tabela de endereçamento
+        "aaa": {
+            0b000: 1,  # pre indexado indireto
+            0b001: 1,  # direto
+            0b010: 1,  # imediato
+            0b011: 2,  # direto extendido
+            0b100: 1,  # pos indexado indireto
+            0b101: 1,  # base page indexado
+            0b110: 2,  # indexado absoluto X
+            0b111: 2,  # indexado absoluto Y
+        },
+
+        "bb": {
+            0b000: 1,  # direto
+            0b001: 2,  # extendido direto
+            0b010: 1,  # base page indexado
+            0b011: 2,  # indexado absoluto
+        },
+
+        "bbb": {
+            0b001: 1,  # direto
+            0b010: 0,  # acumulador
+            0b011: 2,  # direto extendido
+            0b101: 1,  # base page indexado
+            0b111: 2,  # indexado absoluto
+        },
+
+        "cc": {
+            0b000: 1,  # imediato
+            0b001: 1,  # direto
+            0b011: 2,  # direto extendido
+        },
+
+        "ddd": {
+            0b000: 1,  # imediato
+            0b001: 1,  # direto
+            0b011: 2,  # direto extendido
+            0b101: 1,  # base page indexado
+            0b111: 2,  # indexado absoluto
+        },
+
+        "x": {
+            0b0: 1,  # direto
+            0b1: 2,  # direto extendido
+        },
+
+        "y": {
+            0b0: 2,  # direto extendido (label)
+            0b1: 2,  # indireto (label)
+        }
     }

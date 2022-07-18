@@ -18,7 +18,7 @@ class RAM():
     memory_end_location = 0xFFFF  # Hexa posição 8byte
 
     def __init__(self):
-        self.memory = [0]*KB*2 
+        self.memory = [0]*KB*16
 
-    def get_memory(self) :
+    def get_memory(self):
         return self.memory
